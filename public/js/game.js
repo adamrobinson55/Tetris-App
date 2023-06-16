@@ -225,7 +225,7 @@ deactivateBlock = () => {
 
         // checks if the block has tried to move and ended up in the negatives
         if (currentBlock.row + r < 0) {
-          // return gameOverFunction or whatever it ends up being called
+          return showGameOver();
         }
 
         gameZone[currentBlock.row + r][currentBlock.col + c] = currentBlock.name
@@ -236,6 +236,22 @@ deactivateBlock = () => {
   // after a block is deactivated we check for filled rows
   // just stops everything? idk 
   //removeFill()
+
+  // for loop to check for filled rows from the bottom up
+  for (let row = gameZone.length - 1; row >= 0; ) {
+    if (gameZone[row].every(cell => !!cell)) {
+
+      // lowers the rows that were above the filled one.
+      for (let r = row; r >= 0; r--) {
+        for (let c = 0; c < gameZone[r].length; c++) {
+          gameZone[r][c] = gameZone[r-1][c];
+        }
+      }
+    }
+    else {
+      row--;
+    }
+  }
 
   // after a block is deactivated we
   currentBlock = getNextBlock()
@@ -254,7 +270,7 @@ function gameLoop() {
   for (let r = 0; r < zoneRows; r++) {
     for (let c = 0; c < zoneColumns; c++) {
       if (gameZone[r][c]) {
-        context.fillStyle = 'red'
+        context.fillStyle = colors[currentBlock.name]
         context.fillRect(c * blockSize, r * blockSize, blockSize, blockSize)
       }
     }
