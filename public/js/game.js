@@ -4,6 +4,7 @@ const context = canvas.getContext('2d')
 const blockSize = 32;
 let score = 0
 scoreBoard.innerHTML = "Score: " + score;
+
 //next tetromino
 const nextTetrominoCanvas = document.getElementById('next-tetromino');
 const nextTetrominoContext = nextTetrominoCanvas.getContext('2d');
@@ -390,6 +391,10 @@ document.addEventListener('keydown', function (e) {
 
     currentBlock.row = newRow;
   }
+
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowRight'){
+    e.preventDefault();
+  };
 });
 
 
