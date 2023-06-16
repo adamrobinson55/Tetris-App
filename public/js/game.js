@@ -53,13 +53,13 @@ const blockShapes = {
 
 // sets the colors for the tetrominoes
 const colors = {
-  'I': '#00ffff',
-  'O': '#ffff00',
-  'T': '#800080',
-  'S': '#39892F',
-  'Z': '#FD3F59',
-  'J': '#485DC5',
-  'L': '#FE4819'
+  'I': ['#00ffff'],
+  'O': ['#ffff00'],
+  'T': ['#800080'],
+  'S': ['#39892F'],
+  'Z': ['#FD3F59'],
+  'J': ['#485DC5'],
+  'L': ['#FE4819']
 };
 
 //get random number with min and max
@@ -237,7 +237,8 @@ function gameLoop() {
   for (let r = 0; r < zoneRows; r++) {
     for (let c = 0; c < zoneColumns; c++) {
       if (gameZone[r][c]) {
-        context.fillStyle = colors[currentBlock.name]
+        const name = gameZone[r][c]
+        context.fillStyle = colors[name]
         context.fillRect(c * blockSize, r * blockSize, blockSize - 1, blockSize - 1)
       }
     }
