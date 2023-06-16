@@ -220,6 +220,22 @@ deactivateBlock = () => {
 
   removeFill()
 
+  // for loop to check for filled rows from the bottom up
+  for (let row = gameZone.length - 1; row >= 0; ) {
+    if (gameZone[row].every(cell => !!cell)) {
+
+      // lowers the rows that were above the filled one.
+      for (let r = row; r >= 0; r--) {
+        for (let c = 0; c < gameZone[r].length; c++) {
+          gameZone[r][c] = gameZone[r-1][c];
+        }
+      }
+    }
+    else {
+      row--;
+    }
+  }
+
   // after a block is deactivated we
   currentBlock = getNextBlock()
 
