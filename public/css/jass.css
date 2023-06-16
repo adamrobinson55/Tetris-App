@@ -1,62 +1,15 @@
-html {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    background-image: url("/public/images/flowers.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  #game-intro {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: palevioletred;
-  }
-  
-  canvas {
-    border: 1px solid white;
-  }
-  
-  #game-intro h1 {
-    font-size: 5.5em;
-    text-align: center;
-    font-family: "Delicious Handrawn";
-  }
-  
-  #tetris {
-    background: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  #tetris-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  #tetromino-box {
-    flex-direction: column;
-    margin-bottom: 430px;
-    color: ;
-  }
-  
-  #nextTetromino {
-    background: black;
-  }
-  
-  #saved-tetromino {
-    background: black;
-  }
-  
-  h3 {
-    margin: 0;
-  }
-  
+body{
+    background-color: black;
+    color: white;
+}
+
+canvas {
+  border: 1px solid white;
+}
+
+#tetris {
+  background: gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
