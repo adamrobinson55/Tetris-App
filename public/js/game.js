@@ -264,7 +264,7 @@ function gameLoop() {
       for (let c = 0; c < currentBlock.shape[r].length; c++) {
         if (currentBlock.shape[r][c]) {
 
-          context.fillRect((currentBlock.col + c) * blockSize, (currentBlock.row + r) * blockSize, blockSize -1, blockSize -1)
+          context.fillRect((currentBlock.col + c) * blockSize, (currentBlock.row + r) * blockSize, blockSize - 1, blockSize - 1)
         }
       }
     }
