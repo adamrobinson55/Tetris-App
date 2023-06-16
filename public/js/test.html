@@ -9,14 +9,19 @@
         text-align: center;
         align-items: center;
       }
-      canvas {
+      #tetris {
         border: solid .2em #fff;
         height: 90vh;
+      }
+      canvas{
+        border: solid .2em #fff;
       }
     </style>
 </head>
 <body>
     <div id="score-board"></div>
+
+    <canvas id="next-tetromino" width="120" height="120"></canvas>
     <canvas id="tetris" width="320" height="640" >
     <script src="game.js"></script>
 </body>
