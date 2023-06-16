@@ -13,48 +13,59 @@ const blockBag = []
 
 // create the shapes of the blocks
 const blockShapes = {
-    'I': [
-      [0,0,0,0],
-      [1,1,1,1],
-      [0,0,0,0],
-      [0,0,0,0]
-    ],
-    'J': [
-      [1,0,0],
-      [1,1,1],
-      [0,0,0],
-    ],
-    'L': [
-      [0,0,1],
-      [1,1,1],
-      [0,0,0],
-    ],
-    'O': [
-      [1,1],
-      [1,1],
-    ],
-    'S': [
-      [0,1,1],
-      [1,1,0],
-      [0,0,0],
-    ],
-    'Z': [
-      [1,1,0],
-      [0,1,1],
-      [0,0,0],
-    ],
-    'T': [
-      [0,1,0],
-      [1,1,1],
-      [0,0,0],
-    ]
+  'I': [
+    [0, 0, 0, 0],
+    [1, 1, 1, 1],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]
+  ],
+  'J': [
+    [1, 0, 0],
+    [1, 1, 1],
+    [0, 0, 0],
+  ],
+  'L': [
+    [0, 0, 1],
+    [1, 1, 1],
+    [0, 0, 0],
+  ],
+  'O': [
+    [1, 1],
+    [1, 1],
+  ],
+  'S': [
+    [0, 1, 1],
+    [1, 1, 0],
+    [0, 0, 0],
+  ],
+  'Z': [
+    [1, 1, 0],
+    [0, 1, 1],
+    [0, 0, 0],
+  ],
+  'T': [
+    [0, 1, 0],
+    [1, 1, 1],
+    [0, 0, 0],
+  ]
 }
 
 // set up more data about the blocks?
 
+// sets the colors for the tetrominoes
+const colors = {
+  'I': '#00ffff',
+  'O': '#ffff00',
+  'T': '#800080',
+  'S': '#39892F',
+  'Z': '#FD3F59',
+  'J': '#485DC5',
+  'L': '#FE4819'
+};
+
 //get random number with min and max
 function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 // create the area that will be played in
@@ -67,56 +78,56 @@ const zoneColumns = 10
 // create a matrix for the gameZone using zoneRows and zoneColumns, it's like all right here idk if i need these variables
 // row starts at -2 so that there are 2 STARTER rows for blocks or tiles or whatever to appear
 for (let row = -2; row < zoneRows; row++) {
-    gameZone[row] = []
-  
-    for (let col = 0; col < zoneColumns; col++) {
-     gameZone[row][col] = 0
-    }
+  gameZone[row] = []
+
+  for (let col = 0; col < zoneColumns; col++) {
+    gameZone[row][col] = 0
+  }
 }
 
 // generate a "bag" of tiles for use in game
 // this is something that REAL tetris does :^)
 
 generateBag = () => {
-    const blockNames = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
-  
-    while (blockNames.length) {
-      const randy = getRandomInt(0, blockNames.length - 1)
-      const name = blockNames.splice(randy, 1)[0]
-      blockBag.push(name)
-    }
-    console.log(blockBag)
+  const blockNames = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
+
+  while (blockNames.length) {
+    const randy = getRandomInt(0, blockNames.length - 1)
+    const name = blockNames.splice(randy, 1)[0]
+    blockBag.push(name)
+  }
+  console.log(blockBag)
 }
 
 // go into the blockbag and get the next matrix tile
 getNextBlock = () => {
-    // check if the bag exists and create one if it doesnt
-    if(blockBag.length === 0) {
-        console.log("something happened")
-        generateBag()
-    }
+  // check if the bag exists and create one if it doesnt
+  if (blockBag.length === 0) {
+    console.log("something happened")
+    generateBag()
+  }
 
-    // get a name from the bag
-    const name = blockBag.pop()
-    console.log(name)
-    // get the shape from the name
-    const localShape = blockShapes[name]
-    // get starting column
-    // stuff starts in the middle, use first row, divide by 2
-    // it's an equation so if we make the tetris field huge this doesn't need be changed
-    startingCol = gameZone[0].length / 2
-    // get starting row
-    // all things start at -1 and have a nice little head room with -2
-    startingRow = -1
+  // get a name from the bag
+  const name = blockBag.pop()
+  console.log(name)
+  // get the shape from the name
+  const localShape = blockShapes[name]
+  // get starting column
+  // stuff starts in the middle, use first row, divide by 2
+  // it's an equation so if we make the tetris field huge this doesn't need be changed
+  startingCol = gameZone[0].length / 2
+  // get starting row
+  // all things start at -1 and have a nice little head room with -2
+  startingRow = -1
 
-    // return data it's an object that knows everthing about the way it looks
+  // return data it's an object that knows everthing about the way it looks
 
-    return {
-      name: name,
-      shape: localShape,
-      row: startingRow,
-      col: startingCol
-    }
+  return {
+    name: name,
+    shape: localShape,
+    row: startingRow,
+    col: startingCol
+  }
 }
 
 // set current block to whatver getNextBlock is for ease of use
@@ -125,24 +136,24 @@ console.log(currentBlock.shape.length)
 
 //rotate pieces
 rotateMatrix = (matrix) => {
-    const rows = matrix.length
-    const columns = matrix[0].length
-  
-    // create a new matrix of the same size
-    const newMatrix = new Array(columns)
-    for (let i = 0; i < columns; i++) {
-      newMatrix[i] = new Array(rows)
+  const rows = matrix.length
+  const columns = matrix[0].length
+
+  // create a new matrix of the same size
+  const newMatrix = new Array(columns)
+  for (let i = 0; i < columns; i++) {
+    newMatrix[i] = new Array(rows)
+  }
+
+  // this goes through the ORIGINAL
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < columns; col++) {
+      // column and row are reversed and it works from the HIGHEST row value descending
+      newMatrix[col][rows - 1 - row] = matrix[row][col]
     }
-  
-    // this goes through the ORIGINAL
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < columns; col++) {
-        // column and row are reversed and it works from the HIGHEST row value descending
-        newMatrix[col][rows - 1 - row] = matrix[row][col]
-      }
-    }
-  
-    return newMatrix
+  }
+
+  return newMatrix
 }
 
 console.log(rotateMatrix(blockShapes['I']))
@@ -157,14 +168,14 @@ console.log(rotateMatrix(blockShapes['Z']))
 
 removeFill = () => {
   //starting from the bottom, (massive pain), iterate through each row column to check if filled
-  for(let r = gameZone.length - 1; r >= 0;) {
-    for(let c = 0; c < gameZone[r].length; c++) {
-      if(!gameZone[r][c]){
+  for (let r = gameZone.length - 1; r >= 0;) {
+    for (let c = 0; c < gameZone[r].length; c++) {
+      if (!gameZone[r][c]) {
 
         //then iterate through all the rows ABOVE the row if it was filled and move them
         //down a row, also starting from the bottom
-        for(let newR = r; newR >= 0; newR--) {
-          for(let newC = c; newC >= gameZone[newR].length; newC++) {
+        for (let newR = r; newR >= 0; newR--) {
+          for (let newC = c; newC >= gameZone[newR].length; newC++) {
             gameZone[newR][newC] = gameZone[newR - 1][newC]
             //this is probably where score is added
             //maybe increase a number to see how many rows were moved and then add more for
@@ -177,16 +188,16 @@ removeFill = () => {
         r--;
       }
     }
-}
+  }
 }
 // check if the move can be done?
-  // get shape, get location of shape (that would be it's column/row)
-  // loop through the parts of that shape
+// get shape, get location of shape (that would be it's column/row)
+// loop through the parts of that shape
 // checks shape,  checks where it is
 isValidMove = (matrix, blockRow, blockCol) => {
-  for(let r = 0; r < matrix.length; r++) {
-    for(let c = 0; c < matrix[r].length; c++) {
-      if(matrix[r][c] && (
+  for (let r = 0; r < matrix.length; r++) {
+    for (let c = 0; c < matrix[r].length; c++) {
+      if (matrix[r][c] && (
         // we need to check if it's at the max left
         blockCol + c < 0 ||
         // the max right
@@ -195,9 +206,9 @@ isValidMove = (matrix, blockRow, blockCol) => {
         blockRow + r >= gameZone.length ||
         // this checks if any area our matrix block is filled with an already placed block
         gameZone[blockRow + r][blockCol + c])
-        ) {
-          return false
-        }
+      ) {
+        return false
+      }
     }
   }
   // if we're NOT at the EDGE and there's NOT a piece in the way we return true
@@ -205,8 +216,8 @@ isValidMove = (matrix, blockRow, blockCol) => {
 }
 
 // only the active block can be interacted with, when it reaches the bottom it becomes inactive, create a function that does this
-  // check if lines are filled with the line filled function
-  // 
+// check if lines are filled with the line filled function
+// 
 deactivateBlock = () => {
   for (let r = 0; r < currentBlock.shape.length; r++) {
     for (let c = 0; c < currentBlock.shape[r].length; c++) {
@@ -233,18 +244,18 @@ deactivateBlock = () => {
 
 
 // loop through animation
-    // draw gamezone
-    // draw active block
-    // if the block hits something run the turn inactive function
+// draw gamezone
+// draw active block
+// if the block hits something run the turn inactive function
 function gameLoop() {
   rAF = requestAnimationFrame(gameLoop)
-  context.clearRect(0,0,canvas.width, canvas.height)
+  context.clearRect(0, 0, canvas.width, canvas.height)
 
   for (let r = 0; r < zoneRows; r++) {
-    for(let c= 0; c < zoneColumns; c++) {
-      if(gameZone[r][c]) {
+    for (let c = 0; c < zoneColumns; c++) {
+      if (gameZone[r][c]) {
         context.fillStyle = 'red'
-        context.fillRect(c*blockSize, r*blockSize, blockSize, blockSize)
+        context.fillRect(c * blockSize, r * blockSize, blockSize, blockSize)
       }
     }
   }
@@ -253,24 +264,24 @@ function gameLoop() {
   if (currentBlock) {
 
     //sets speed of the antimation using a timer
-    if(++timer > 20) {
+    if (++timer > 20) {
       currentBlock.row++
       timer = 0
-      
+
       // if the piece hits something on the way down deactivate it 
-      if(!isValidMove(currentBlock.shape, currentBlock.row, currentBlock.col)) {
+      if (!isValidMove(currentBlock.shape, currentBlock.row, currentBlock.col)) {
         currentBlock.row--
         deactivateBlock()
       }
     }
 
-    context.fillStyle = "blue"
+    context.fillStyle = colors[currentBlock.name];
 
-    for(let r = 0; r < currentBlock.shape.length; r++) {
+    for (let r = 0; r < currentBlock.shape.length; r++) {
       for (let c = 0; c < currentBlock.shape[r].length; c++) {
         if (currentBlock.shape[r][c]) {
 
-          context.fillRect(c*blockSize, r*blockSize, blockSize, blockSize)
+          context.fillRect(c * blockSize, r * blockSize, blockSize -1, blockSize -1)
         }
       }
     }
@@ -278,8 +289,24 @@ function gameLoop() {
 }
 
 // game over function
-  // cancel all animations
-  // gameOver = true
+function showGameOver() {
+  // window method to stop animation
+  cancelAnimationFrame(rAF);
+  gameOver = true;
+
+  // banner overlay for text
+  context.fillStyle = 'gray';
+  context.globalAlpha = 0.75;
+  context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
+
+  // text generation to state the game is over
+  context.globalAlpha = 1;
+  context.fillStyle = 'white';
+  context.font = '36px monospace';
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText('GAME OVER!', canvas.width / 2, canvas.height / 2);
+}
 
 // user input
 
