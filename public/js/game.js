@@ -51,6 +51,17 @@ const blockShapes = {
 
 // set up more data about the blocks?
 
+// sets the colors for the tetrominoes
+const colors = {
+  'I': '#00ffff',
+  'O': '#ffff00',
+  'T': '#800080',
+  'S': '#39892F',
+  'Z': '#FD3F59',
+  'J': '#485DC5',
+  'L': '#FE4819'
+};
+
 //get random number with min and max
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
@@ -77,33 +88,36 @@ for (let row = -2; row < zoneRows; row++) {
 // this is something that REAL tetris does :^)
 
 generateBag = () => {
-  const blockNames = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
-
-  while (blockNames.length) {
-    const randy = getRandomInt(0, blockNames.length - 1)
-    const name = blockNames.splice(randy, 1)[0]
-    blockBag.push(name)
-  }
+    const blockNames = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
+  
+    while (blockNames.length) {
+      const randy = getRandomInt(0, blockNames.length - 1)
+      const name = blockNames.splice(randy, 1)[0]
+      blockBag.push(name)
+    }
+    console.log(blockBag)
 }
 
 // go into the blockbag and get the next matrix tile
 getNextBlock = () => {
-  // check if the bag exists and create one if it doesnt
-  if (blockBag.length === 0) {
-    generateBag()
-  }
+    // check if the bag exists and create one if it doesnt
+    if(blockBag.length === 0) {
+        console.log("something happened")
+        generateBag()
+    }
 
-  // get a name from the bag
-  const name = blockBag.pop()
-  // get the shape from the name
-  const localShape = blockShapes[name]
-  // get starting column
-  // stuff starts in the middle, use first row, divide by 2
-  // it's an equation so if we make the tetris field huge this doesn't need be changed
-  startingCol = gameZone[0].length / 2
-  // get starting row
-  // all things start at -1 and have a nice little head room with -2
-  startingRow = -1
+    // get a name from the bag
+    const name = blockBag.pop()
+    console.log(name)
+    // get the shape from the name
+    const localShape = blockShapes[name]
+    // get starting column
+    // stuff starts in the middle, use first row, divide by 2
+    // it's an equation so if we make the tetris field huge this doesn't need be changed
+    startingCol = gameZone[0].length / 2
+    // get starting row
+    // all things start at -1 and have a nice little head room with -2
+    startingRow = -1
 
   // return data it's an object that knows everthing about the way it looks
 
@@ -145,23 +159,24 @@ rotateMatrix = (matrix) => {
 
 // check if lines are filled and need to cleared and points should come
 removeFill = () => {
-  let comboMeter = 0
-  for (let row = gameZone.length - 1; row >= 0;) {
-    if (gameZone[row].every(cell => !!cell)) {
-      comboMeter++
-      // drop every row above this one
-      for (let r = row; r >= 0; r--) {
-        for (let c = 0; c < gameZone[r].length; c++) {
-          gameZone[r][c] = gameZone[r - 1][c];
+  //starting from the bottom, (massive pain), iterate through each row column to check if filled
+  for(let r = gameZone.length - 1; r >= 0;) {
+    for(let c = 0; c < gameZone[r].length; c++) {
+      if(!gameZone[r][c]){
+
+        //then iterate through all the rows ABOVE the row if it was filled and move them
+        //down a row, also starting from the bottom
+        for(let newR = r; newR >= 0; newR--) {
+          for(let newC = c; newC >= gameZone[newR].length; newC++) {
+            gameZone[newR][newC] = gameZone[newR - 1][newC]
+            //this is probably where score is added
+            //maybe increase a number to see how many rows were moved and then add more for
+            // a higher number?
+          }
         }
       }
     }
-    else {
-      row--;
-    }
-  }
-  score += (comboMeter * 10)
-  console.log(score)
+}
 }
 // check if the move can be done?
 // get shape, get location of shape (that would be it's column/row)
@@ -236,7 +251,7 @@ function gameLoop() {
   if (currentBlock) {
 
     //sets speed of the antimation using a timer
-    if (++timer > 40) {
+    if(++timer > 20) {
       currentBlock.row++
       timer = 0
 
@@ -247,13 +262,13 @@ function gameLoop() {
       }
     }
 
-    context.fillStyle = "blue"
+    context.fillStyle = colors[currentBlock.name];
 
     for (let r = 0; r < currentBlock.shape.length; r++) {
       for (let c = 0; c < currentBlock.shape[r].length; c++) {
         if (currentBlock.shape[r][c]) {
 
-          context.fillRect((currentBlock.col + c) * blockSize, (currentBlock.row + r) * blockSize, blockSize, blockSize)
+          context.fillRect(c*blockSize, r*blockSize, blockSize, blockSize)
         }
       }
     }
@@ -261,8 +276,8 @@ function gameLoop() {
 }
 
 // game over function
-// cancel all animations
-// gameOver = true
+  // cancel all animations
+  // gameOver = true
 
 document.addEventListener('keydown', function (e) {
   // dont let users play if the game is over
