@@ -3,7 +3,7 @@ const context = canvas.getContext('2d')
 const blockSize = 32;
 let score = 0
 // gameover should be defaulted to false, had it set to true oops
-const gameOver = false
+let gameOver = false
 
 let timer = 0;
 let rAF = null  // for canvas animations default to null so we can start and end it
@@ -88,36 +88,33 @@ for (let row = -2; row < zoneRows; row++) {
 // this is something that REAL tetris does :^)
 
 generateBag = () => {
-    const blockNames = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
-  
-    while (blockNames.length) {
-      const randy = getRandomInt(0, blockNames.length - 1)
-      const name = blockNames.splice(randy, 1)[0]
-      blockBag.push(name)
-    }
-    console.log(blockBag)
+  const blockNames = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']
+
+  while (blockNames.length) {
+    const randy = getRandomInt(0, blockNames.length - 1)
+    const name = blockNames.splice(randy, 1)[0]
+    blockBag.push(name)
+  }
 }
 
 // go into the blockbag and get the next matrix tile
 getNextBlock = () => {
-    // check if the bag exists and create one if it doesnt
-    if(blockBag.length === 0) {
-        console.log("something happened")
-        generateBag()
-    }
+  // check if the bag exists and create one if it doesnt
+  if (blockBag.length === 0) {
+    generateBag()
+  }
 
-    // get a name from the bag
-    const name = blockBag.pop()
-    console.log(name)
-    // get the shape from the name
-    const localShape = blockShapes[name]
-    // get starting column
-    // stuff starts in the middle, use first row, divide by 2
-    // it's an equation so if we make the tetris field huge this doesn't need be changed
-    startingCol = gameZone[0].length / 2
-    // get starting row
-    // all things start at -1 and have a nice little head room with -2
-    startingRow = -1
+  // get a name from the bag
+  const name = blockBag.pop()
+  // get the shape from the name
+  const localShape = blockShapes[name]
+  // get starting column
+  // stuff starts in the middle, use first row, divide by 2
+  // it's an equation so if we make the tetris field huge this doesn't need be changed
+  startingCol = gameZone[0].length / 2
+  // get starting row
+  // all things start at -1 and have a nice little head room with -2
+  startingRow = -1
 
   // return data it's an object that knows everthing about the way it looks
 
@@ -159,24 +156,23 @@ rotateMatrix = (matrix) => {
 
 // check if lines are filled and need to cleared and points should come
 removeFill = () => {
-  //starting from the bottom, (massive pain), iterate through each row column to check if filled
-  for(let r = gameZone.length - 1; r >= 0;) {
-    for(let c = 0; c < gameZone[r].length; c++) {
-      if(!gameZone[r][c]){
-
-        //then iterate through all the rows ABOVE the row if it was filled and move them
-        //down a row, also starting from the bottom
-        for(let newR = r; newR >= 0; newR--) {
-          for(let newC = c; newC >= gameZone[newR].length; newC++) {
-            gameZone[newR][newC] = gameZone[newR - 1][newC]
-            //this is probably where score is added
-            //maybe increase a number to see how many rows were moved and then add more for
-            // a higher number?
-          }
+  let comboMeter = 0
+  for (let row = gameZone.length - 1; row >= 0;) {
+    if (gameZone[row].every(cell => !!cell)) {
+      comboMeter++
+      // drop every row above this one
+      for (let r = row; r >= 0; r--) {
+        for (let c = 0; c < gameZone[r].length; c++) {
+          gameZone[r][c] = gameZone[r - 1][c];
         }
       }
     }
-}
+    else {
+      row--;
+    }
+  }
+  score += (comboMeter * 10)
+  console.log(score)
 }
 // check if the move can be done?
 // get shape, get location of shape (that would be it's column/row)
@@ -213,7 +209,7 @@ deactivateBlock = () => {
 
         // checks if the block has tried to move and ended up in the negatives
         if (currentBlock.row + r < 0) {
-          // return gameOverFunction or whatever it ends up being called
+          showGameOver()
         }
 
         gameZone[currentBlock.row + r][currentBlock.col + c] = currentBlock.name
@@ -241,8 +237,8 @@ function gameLoop() {
   for (let r = 0; r < zoneRows; r++) {
     for (let c = 0; c < zoneColumns; c++) {
       if (gameZone[r][c]) {
-        context.fillStyle = 'red'
-        context.fillRect(c * blockSize, r * blockSize, blockSize, blockSize)
+        context.fillStyle = colors[currentBlock.name]
+        context.fillRect(c * blockSize, r * blockSize, blockSize - 1, blockSize - 1)
       }
     }
   }
@@ -251,7 +247,7 @@ function gameLoop() {
   if (currentBlock) {
 
     //sets speed of the antimation using a timer
-    if(++timer > 20) {
+    if (++timer > 40) {
       currentBlock.row++
       timer = 0
 
@@ -268,7 +264,7 @@ function gameLoop() {
       for (let c = 0; c < currentBlock.shape[r].length; c++) {
         if (currentBlock.shape[r][c]) {
 
-          context.fillRect(c*blockSize, r*blockSize, blockSize, blockSize)
+          context.fillRect((currentBlock.col + c) * blockSize, (currentBlock.row + r) * blockSize, blockSize -1, blockSize -1)
         }
       }
     }
@@ -276,8 +272,24 @@ function gameLoop() {
 }
 
 // game over function
-  // cancel all animations
-  // gameOver = true
+function showGameOver() {
+  // window method to stop animation
+  cancelAnimationFrame(rAF);
+  gameOver = true;
+
+  // banner overlay for text
+  context.fillStyle = 'gray';
+  context.globalAlpha = 0.75;
+  context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
+
+  // text generation to state the game is over
+  context.globalAlpha = 1;
+  context.fillStyle = 'white';
+  context.font = '36px monospace';
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText('GAME OVER!', canvas.width / 2, canvas.height / 2);
+}
 
 document.addEventListener('keydown', function (e) {
   // dont let users play if the game is over
