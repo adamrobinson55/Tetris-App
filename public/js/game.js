@@ -1,7 +1,14 @@
+const scoreBoard = document.getElementById("score-board")
 const canvas = document.getElementById('tetris')
 const context = canvas.getContext('2d')
 const blockSize = 32;
 let score = 0
+scoreBoard.innerHTML = "Score: " + score;
+
+//next tetromino
+const nextTetrominoCanvas = document.getElementById('next-tetromino');
+const nextTetrominoContext = nextTetrominoCanvas.getContext('2d');
+
 // gameover should be defaulted to false, had it set to true oops
 let gameOver = false
 
@@ -53,13 +60,13 @@ const blockShapes = {
 
 // sets the colors for the tetrominoes
 const colors = {
-  'I': '#00ffff',
-  'O': '#ffff00',
-  'T': '#800080',
-  'S': '#39892F',
-  'Z': '#FD3F59',
-  'J': '#485DC5',
-  'L': '#FE4819'
+  'I': ['#00ffff'],
+  'O': ['#ffff00'],
+  'T': ['#800080'],
+  'S': ['#39892F'],
+  'Z': ['#FD3F59'],
+  'J': ['#485DC5'],
+  'L': ['#FE4819']
 };
 
 //get random number with min and max
@@ -106,6 +113,11 @@ getNextBlock = () => {
 
   // get a name from the bag
   const name = blockBag.pop()
+
+  // checks again if the bag exists - if there isnt anything then create a new bag.
+  if (blockBag.length === 0) {
+    generateBag()
+  }
   // get the shape from the name
   const localShape = blockShapes[name]
   // get starting column
@@ -125,6 +137,53 @@ getNextBlock = () => {
     col: startingCol
   }
 }
+
+drawNextTetromino = () => {
+  nextTetrominoContext.clearRect(0, 0, nextTetrominoCanvas.width, nextTetrominoCanvas.height);
+
+  if (blockBag.length > 0) {
+    const nextBlock = blockShapes[blockBag[blockBag.length - 1]];
+    const blockSize = nextTetrominoCanvas.width / nextBlock.length;
+
+    for (let r = 0; r < nextBlock.length; r++) {
+      for (let c = 0; c < nextBlock[r].length; c++) {
+        if (nextBlock[r][c]) {
+          const color = colors[blockBag[blockBag.length - 1]][0]; // Use the color of the next tetromino
+          nextTetrominoContext.fillStyle = color;
+          nextTetrominoContext.fillRect(c * blockSize, r * blockSize, blockSize - 1, blockSize - 1);
+        }
+      }
+    }
+  }
+}
+
+drawNextTetromino();
+
+drawShadow = () => {
+  const shadowTetromino = {
+    ...currentBlock,
+    row: currentBlock.row // copies the currentBlock row
+  }
+
+  while (isValidMove(shadowTetromino.shape, shadowTetromino.row + 1, shadowTetromino.col)) {
+    shadowTetromino.row++;
+  }
+
+  // Draw the shadow tetromino on the game zone
+  for (let r = 0; r < shadowTetromino.shape.length; r++) {
+    for (let c = 0; c < shadowTetromino.shape[r].length; c++) {
+      if (shadowTetromino.shape[r][c]) {
+        context.fillStyle = 'rgba(0, 0, 0, 0.3)'; // Set the color of the shadow tetromino
+        context.fillRect(
+          (shadowTetromino.col + c) * blockSize,
+          (shadowTetromino.row + r) * blockSize,
+          blockSize - 1,
+          blockSize - 1
+        );
+      }
+    }
+  }
+};
 
 // set current block to whatver getNextBlock is for ease of use
 let currentBlock = getNextBlock()
@@ -151,9 +210,6 @@ rotateMatrix = (matrix) => {
   return newMatrix
 }
 
-
-
-
 // check if lines are filled and need to cleared and points should come
 removeFill = () => {
   let comboMeter = 0
@@ -172,8 +228,10 @@ removeFill = () => {
     }
   }
   score += (comboMeter * 10)
+  scoreBoard.innerHTML = "Score: " + score;
   console.log(score)
 }
+
 // check if the move can be done?
 // get shape, get location of shape (that would be it's column/row)
 // loop through the parts of that shape
@@ -220,6 +278,22 @@ deactivateBlock = () => {
 
   removeFill()
 
+  // for loop to check for filled rows from the bottom up
+  for (let row = gameZone.length - 1; row >= 0; ) {
+    if (gameZone[row].every(cell => !!cell)) {
+
+      // lowers the rows that were above the filled one.
+      for (let r = row; r >= 0; r--) {
+        for (let c = 0; c < gameZone[r].length; c++) {
+          gameZone[r][c] = gameZone[r-1][c];
+        }
+      }
+    }
+    else {
+      row--;
+    }
+  }
+
   // after a block is deactivated we
   currentBlock = getNextBlock()
 
@@ -237,7 +311,8 @@ function gameLoop() {
   for (let r = 0; r < zoneRows; r++) {
     for (let c = 0; c < zoneColumns; c++) {
       if (gameZone[r][c]) {
-        context.fillStyle = colors[currentBlock.name]
+        const name = gameZone[r][c]
+        context.fillStyle = colors[name]
         context.fillRect(c * blockSize, r * blockSize, blockSize - 1, blockSize - 1)
       }
     }
@@ -269,6 +344,8 @@ function gameLoop() {
       }
     }
   }
+  drawShadow();
+  drawNextTetromino();
 }
 
 // game over function
@@ -330,7 +407,12 @@ document.addEventListener('keydown', function (e) {
 
     currentBlock.row = newRow;
   }
+
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowRight'){
+    e.preventDefault();
+  };
 });
+
 
 // start game
 rAF = requestAnimationFrame(gameLoop)
