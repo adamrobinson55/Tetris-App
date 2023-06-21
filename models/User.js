@@ -21,9 +21,17 @@ User.init(
             allowNull: false,
         },
         hiscore: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             // does this need anything else?
         },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+              isEmail: true,
+            },
+          },
         password: {
             type: DataTypes.STRING,
             allowNull: false,
