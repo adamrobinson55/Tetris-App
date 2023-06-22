@@ -1,7 +1,9 @@
 <div class="container">
-  <p>Highscores!</p>
-  <ol>
-    <li>{{name}} - {{hiscore}}</li>
+  <div class="big-text"> Highscores! </div>
+  <ol >
+  {{#each users as |user|}}
+    <li class="med-text">{{user.name}} - {{user.hiscore}}</li>
+  {{/each}}
   </ol>
 
 </div>

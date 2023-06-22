@@ -15,6 +15,8 @@ const loginFormHandler = async (event) => {
 
     if (response.ok) {
       // If successful, redirect the browser to the profile page
+      const data = await response.json()
+      localStorage.setItem("user_id", data.user.id)
       document.location.replace("/game");
     } else {
       alert(response.statusText);
