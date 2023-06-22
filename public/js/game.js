@@ -2,8 +2,14 @@ const scoreBoard = document.getElementById("score-board")
 const canvas = document.getElementById('tetris')
 const context = canvas.getContext('2d')
 const blockSize = 32;
+const columns = 10
 let score = 0
 scoreBoard.innerHTML = "Score: " + score;
+
+//save tetromino
+const savedTetrominoCanvas = document.getElementById('saved-tetromino');
+const savedTetrominoContext = savedTetrominoCanvas.getContext('2d');
+let savedTetromino = null;
 
 //next tetromino
 const nextTetrominoCanvas = document.getElementById('next-tetromino');
@@ -159,6 +165,64 @@ drawNextTetromino = () => {
 
 drawNextTetromino();
 
+const drawSavedTetromino = () => {
+  savedTetrominoContext.clearRect(0, 0, savedTetrominoCanvas.width, savedTetrominoCanvas.height);
+
+  if (savedTetromino) {
+    const blockSize = savedTetrominoCanvas.width / savedTetromino.shape.length;
+
+    for (let r = 0; r < savedTetromino.shape.length; r++) {
+      for (let c = 0; c < savedTetromino.shape[r].length; c++) {
+        if (savedTetromino.shape[r][c]) {
+          const color = colors[savedTetromino.name][0];
+          savedTetrominoContext.fillStyle = color;
+          savedTetrominoContext.fillRect(c * blockSize, r * blockSize, blockSize - 1, blockSize - 1);
+        }
+      }
+    }
+  }
+};
+
+// Function to save the current tetromino
+const saveTetromino = () => {
+  // If no tetromino is saved, save the current tetromino and get the next one
+  if (!savedTetromino) {
+    savedTetromino = {
+      name: currentBlock.name,
+      shape: currentBlock.shape,
+      row: currentBlock.row,
+      col: currentBlock.col
+    };
+    currentBlock = getNextBlock();
+  }
+  // Otherwise, swap the current tetromino with the saved tetromino
+  else {
+    const tempTetromino = {
+      name: currentBlock.name,
+      shape: currentBlock.shape,
+      row: currentBlock.row,
+      col: currentBlock.col
+    };
+    currentBlock = {
+      name: savedTetromino.name,
+      shape: savedTetromino.shape,
+      row: 0, // Place the saved tetromino at the top
+      col: Math.floor((columns - savedTetromino.shape[0].length) / 2) // Center the saved tetromino horizontally
+    };
+    savedTetromino = tempTetromino;
+  }
+
+  drawSavedTetromino();
+};
+
+deactivateBlock = () => {
+  // ...
+
+  // after a block is deactivated we
+  currentBlock = getNextBlock();
+  savedTetromino = null;
+};
+
 drawShadow = () => {
   const shadowTetromino = {
     ...currentBlock,
@@ -184,7 +248,6 @@ drawShadow = () => {
     }
   }
 };
-
 // set current block to whatver getNextBlock is for ease of use
 let currentBlock = getNextBlock()
 
@@ -408,10 +471,16 @@ document.addEventListener('keydown', function (e) {
     currentBlock.row = newRow;
   }
 
-  if(e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowRight'){
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === ' '){
     e.preventDefault();
   };
+
+  if (e.key === ' ') {
+    saveTetromino();
+  }
 });
+
+
 
 
 // start game

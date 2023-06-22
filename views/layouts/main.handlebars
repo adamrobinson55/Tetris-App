@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Flower Tetris</title>
-        <link rel="stylesheet" href="./css/style.css">
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flower Tetris</title>
+    <link rel="stylesheet" href="/css/jass.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
 
-    <body>
-        <header>
-            <h1>Flower Tetris</h1>
-            <nav>
-                {{#if logged_in}}
-                <button type="button">Logout!!!</button>
-                {{else}}
-                <a href="/login">Login</a>
-                {{/if}}
+  <body>
+    <header>
+      <h1>Flower Tetris</h1>
+      <nav>
+        {{#if logged_in}}
+          <button class="no-button" id="logout">Logout</button>
+        <ul>
+          <li>
+            <a href="/game">game</a>
+          </li>
 
-                <ul>
-                    <li>
-                        <a href="/homepage">Homepage</a>
-                    </li>
+          <li>
+            <a href="/highscores">highscores</a>
+          </li>
+        </ul>
+        {{/if}}
+      </nav>
+    </header>
 
-                    <li>
-                        <a href="/game">Game</a>
-                    </li>
+    <main>
+      {{{body}}}
+    </main>
 
-                    <li>
-                        <a href="/login">Login</a>
-                    </li>
-                </ul>
+    <footer>
 
-            </nav>
-        </header>
+    </footer>
 
-        <main>
-            {{{body}}}
-        </main>
-    </body>
+    {{#if logged_in}}
+      <script src="/js/logout.js"></script>
+    {{/if}}
+  </body>
 </html>
