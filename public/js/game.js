@@ -417,6 +417,8 @@ function showGameOver() {
   cancelAnimationFrame(rAF);
   gameOver = true;
 
+  // 
+
   // banner overlay for text
   context.fillStyle = 'gray';
   context.globalAlpha = 0.75;

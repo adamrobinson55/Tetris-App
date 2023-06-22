@@ -21,9 +21,11 @@
           </li>
 
           <li>
-            <a href="/highscores">highscores</a>
+            <a href="/highscores">Highscores</a>
           </li>
         </ul>
+        {{else }}
+          <a href="/login">login</a>
         {{/if}}
       </nav>
     </header>
@@ -36,7 +38,7 @@
 
     </footer>
 
-    {{#if logged_in}}
+    {{#if logged_in }}
       <script src="/js/logout.js"></script>
     {{/if}}
   </body>

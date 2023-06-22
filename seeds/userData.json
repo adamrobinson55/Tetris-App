@@ -1,0 +1,39 @@
+[
+    {
+      "name": "Sal",
+      "hiscore": 40,
+      "email": "sal@hotmail.com",
+      "password": "password12345"
+    },
+    {
+      "name": "Lernantino",
+      "hiscore": 30,
+      "email": "lernantino@gmail.com",
+      "password": "password12345"
+    },
+    {
+      "name": "Amiko",
+      "hiscore": 20,
+      "email": "amiko2k20@aol.com",
+      "password": "password12345"
+    },
+    {
+        "name": "nantino",
+        "hiscore": 300,
+        "email": "lernantino@gmail.com",
+        "password": "password12345"
+      },
+      {
+        "name": "Lernno",
+        "hiscore": 354,
+        "email": "lernantino@gmail.com",
+        "password": "password12345"
+      },
+      {
+        "name": "Lerino",
+        "hiscore": 333,
+        "email": "lernino@gmail.com",
+        "password": "password12345"
+      }
+  ]
+  
