@@ -6,9 +6,19 @@
 }
 
 body {
-	background: url(nft.gif);
+	background: url(../images/nft.gif);
 	background-size: cover;
 }
+
+canvas {
+	border: 1px solid white;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	margin: auto
+  }
 
 .container {
 	display: flex;
@@ -78,7 +88,7 @@ body {
 	border-bottom-color: #6A679E;
 }
 
-.login_submit {
+.submit {
 	background: rgb(245, 110, 106);
 	font-size: 14px;
 	margin-top: 30px;
@@ -96,9 +106,9 @@ body {
 	transition: .2s;
 }
 
-.login_submit:active,
-.login_submit:focus,
-.login_submit:hover {
+.submit:active,
+.submit:focus,
+.submit:hover {
 	border-color: #6A679E;
 	outline: none;
 }
@@ -108,3 +118,10 @@ body {
 	margin-left: auto;
 	color: #7875B5;
 }
+
+#tetris {
+	background: gray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+  }
