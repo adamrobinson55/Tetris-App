@@ -20,16 +20,17 @@ router.get("/login", (req, res) => {
 
 router.get("/highscores", async (req, res) => {
   try {
-    const scoreData = await User.findAll({
-      order: ["hiscore", "DESC"],
+    const userData = await User.findAll({
+      attributes: ['name', 'hiscore'],
+      order: [["hiscore", "DESC"]],
     });
 
-    const scores = scoreData.map((user) =>
+    const users = userData.map((user) =>
       user.get({ plain: true })
     );
-
+    console.log(users)
     res.render("highscores", {
-      scores,
+      users,
       logged_in: req.session.logged_in,
     });
   } catch (err) {

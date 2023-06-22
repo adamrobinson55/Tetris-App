@@ -6,8 +6,8 @@ const withAuth = require("../../utils/auth");
 router.put("/hiscore/:userid", async (req, res) => {
   try {
     const userData = await User.update(
-      { hiscore: req.body.highscore },
-      { where: { id: req.params.userId } }
+      { hiscore: req.body.hiscore },
+      { where: { id: req.params.userid } }
     );
     res.json(userData);
   } catch (err) {

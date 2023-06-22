@@ -417,7 +417,27 @@ function showGameOver() {
   cancelAnimationFrame(rAF);
   gameOver = true;
 
-  // 
+  // create highscore
+  const user = localStorage.getItem("user_id")
+  const newHiScore = score
+
+  fetch(`/api/users/hiscore/${user}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ hiscore: newHiScore })
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('High score updated successfully!');
+    } else {
+      console.error('Failed to update high score.');
+    }
+  })
+  .catch(error => {
+    console.error('Error updating high score:', error);
+  });
 
   // banner overlay for text
   context.fillStyle = 'gray';
