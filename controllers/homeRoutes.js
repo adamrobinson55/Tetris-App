@@ -35,8 +35,15 @@ router.get('/profile', withAuth, (req, res)=>{
   res.render('profile')
 });
 
-router.get('/homepage', withAuth, (req, res)=>{
-  res.render('homepage')
+router.get('/homepage', withAuth, (req, res) => {
+
+  const userData = await User.findByPk(req.session.user_id, {
+    attributes: { exclude: ['password'] },
+    include: [{}]
+  })
+  res.render('homepage', {
+
+  })
 });
 
 module.exports = router;
