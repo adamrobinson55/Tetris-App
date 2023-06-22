@@ -1,9 +1,24 @@
 <div class="container">
-  <div class="big-text"> Highscores! </div>
+  <h1 class="big-text"> Highscores! </h1>
   <ol >
   {{#each users as |user|}}
     <li class="med-text">{{user.name}} - {{user.hiscore}}</li>
   {{/each}}
   </ol>
-
+  
 </div>
+
+<div class="comment-container">
+  <h3>Comments</h3>
+  
+  <ol>
+    {{#each comments as |comment| }}
+    <li>{{comment.comment_content}} by {{comment.user.name}}</li>
+    {{/each}}
+  </ol>
+  
+  {{> comment }}
+</div>
+
+
+<script src="/js/commenting.js"></script>
