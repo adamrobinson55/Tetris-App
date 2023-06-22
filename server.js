@@ -32,6 +32,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/game', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/html/game.html'));
+});
+
 app.use(routes);
 
 // sequelize.sync({ force: false }).then(() => {

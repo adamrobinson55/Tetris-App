@@ -37,29 +37,36 @@ body{
   pointer-events: none;
 }
 
-.Saved-Tetro {
+.left-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   border: blue;
   color: white;
   margin-top: 50px;
+  font-size: 20px;
 }
 
 #saved-tetromino{
   border: 4px solid blue;
 }
 
-.Next-Tetro {
+.right-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   border: blue;
   color: white;
   margin-top: 50px;
+  font-size: 20px;
 }
 
 #next-tetromino{
   border: 4px solid blue;
 }
 
+#score-board{
+  color: white;
+  font-size: 25px;
+  margin-top: 50px;
+}

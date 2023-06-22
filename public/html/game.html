@@ -7,18 +7,22 @@
   <title>Flower Tetris!</title>
 </head>
 <body>
+  <nav>
+    <a id="return-home" href="/">Home</a>
+  </nav>
   <section id="Game">
-    <div id="score-board"></div>
-    <div class="Saved-Tetro">
+    <div class="left-section">
       <div>Saved Tetromino</div>
       <canvas id="saved-tetromino" width="120" height="120"></canvas>
     </div>
     <canvas id="tetris" width="320" height="640"></canvas>
-    <div class="Next-Tetro">
+    <div class="right-section">
       <div>Next Tetromino</div>
       <canvas id="next-tetromino" width="120" height="120"></canvas>
+      <div id="score-board"></div>
     </div>
   </section>
   <script src="/public/js/game.js"></script>
+  <script src="/server.js"></script>
 </body>
 </html>
