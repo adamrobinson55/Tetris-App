@@ -3,17 +3,20 @@ const { User } = require("../../models");
 const withAuth = require("../../utils/auth");
 
 //update hiscore
-router.put('/hiscore', async (req, res)=>{
-  try{
-    const userData = await User.findOne( req.body, {where: {id: req.params.id} } );
-    
-  }catch (err){
+router.put("/hiscore/:userid", async (req, res) => {
+  try {
+    const userData = await User.update(
+      { hiscore: req.body.highscore },
+      { where: { id: req.params.userId } }
+    );
+    res.json(userData);
+  } catch (err) {
     res.status(400).json(err);
   }
-})
+});
 
-//sign up
-router.post('/', async (req, res) => {
+
+router.post("/", async (req, res) => {
   try {
     const userData = await User.create(req.body);
 

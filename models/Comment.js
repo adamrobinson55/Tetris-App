@@ -18,13 +18,6 @@ Comment.init(
         key: "id",
       },
     },
-    comment_title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [1],
-      },
-    },
     comment_content: {
       type: DataTypes.STRING,
       allowNull: false,
