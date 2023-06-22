@@ -37,8 +37,8 @@ router.get("/highscores", async (req, res) => {
   }
 });
 
-router.get('/homepage', withAuth, (req, res)=>{
-  res.render("homepage", {
+router.get('/profile', withAuth, (req, res)=>{
+  res.render("profile", {
     logged_in: req.session.logged_in,
   });
 });
