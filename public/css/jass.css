@@ -1,21 +1,65 @@
-main {
-    background-color: black;
-    color: white;
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
 }
 
-canvas {
-  border: 1px solid white;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  margin: auto
-}
-
-#tetris {
-  background: gray;
+body{
+  background-image: url(/public/images/gamebg.jpg);
   display: flex;
-  align-items: center;
   justify-content: center;
 }
+
+#Game {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#tetris{
+  border: 4px solid blue;
+  border-top: 10px solid rgb(49, 49, 252);
+  border-bottom: 10px solid rgb(49, 49, 252);
+  margin-top: 50px;
+  margin-right: 20px;
+  margin-left: 20px;
+
+  background-color: rgba(80, 80, 80, 0.5);
+}
+
+#tetris::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #666; /* Set the color of the grid lines */
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.Saved-Tetro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: blue;
+  color: white;
+  margin-top: 50px;
+}
+
+#saved-tetromino{
+  border: 4px solid blue;
+}
+
+.Next-Tetro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: blue;
+  color: white;
+  margin-top: 50px;
+}
+
+#next-tetromino{
+  border: 4px solid blue;
+}
+
