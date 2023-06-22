@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,13 +7,18 @@
   <title>Flower Tetris!</title>
 </head>
 <body>
-  <div id="score-board"></div>
-
-  <div>Next Tetromino</div>
-  <canvas id="next-tetromino" width="120" height="120"></canvas>
-  <div>Saved Tetromino</div>
-  <canvas id="saved-tetromino" width="120" height="120"></canvas>
-  <canvas id="tetris" width="320" height="640" >
+  <section id="Game">
+    <div id="score-board"></div>
+    <div class="Saved-Tetro">
+      <div>Saved Tetromino</div>
+      <canvas id="saved-tetromino" width="120" height="120"></canvas>
+    </div>
+    <canvas id="tetris" width="320" height="640"></canvas>
+    <div class="Next-Tetro">
+      <div>Next Tetromino</div>
+      <canvas id="next-tetromino" width="120" height="120"></canvas>
+    </div>
+  </section>
   <script src="/public/js/game.js"></script>
 </body>
 </html>
